@@ -13,7 +13,6 @@ public class CPTJayred{
 		int intCurrentMouseButton;
 		
 		String strChoice = "";
-		
 		Font fntSquare = con.loadFont("square.ttf", 125);
 		
 		
@@ -26,89 +25,104 @@ public class CPTJayred{
 		con.setDrawFont(fntSquare2);
 		
 		//Home Screen
-		
-		while(strChoice.equals("")){
-		intMouseX = con.currentMouseX();
-		intMouseY = con.currentMouseY();
-		intCurrentMouseButton = con.currentMouseButton();
-		con.repaint();
-			if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 546) && (intMouseY <= 582))){
-				//Help Button
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawRect(530,544,200,38);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString("HELP", 572, 534);
-				if(intCurrentMouseButton == 1){
-					strChoice = "h";
-				}
-			}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 446) && (intMouseY <= 482))){
-				//Watch Button
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawRect(530,444,200,38);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString("WATCH", 557, 434);
-				if(intCurrentMouseButton == 1){
-					strChoice = "w";
-				}
-			}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 346) && (intMouseY <= 382))){
-				// Score Button
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawRect(530,344,200,38);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString("SCORES", 537, 334);
-				if(intCurrentMouseButton == 1){
-					strChoice = "s";
-				}
-			}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 246) && (intMouseY <= 282))){
-				//Play Button
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawRect(530,244,200,38);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString("PLAY", 572, 234);
-				if(intCurrentMouseButton == 1){
-					strChoice = "p";
-				}
-			}else{
-				//Display When Buttons Are Not Being Hovered
-				con.setDrawColor(Color.WHITE);
-				con.drawRect(530,544,200,38);
+		while(!strChoice.equals("q")){
+			con.clear();
+			strChoice = "";
+			
+			while(strChoice.equals("")){
+			intMouseX = con.currentMouseX();
+			intMouseY = con.currentMouseY();
+			intCurrentMouseButton = con.currentMouseButton();
+			con.repaint();
+				if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 546) && (intMouseY <= 582))){
+					//Help Button
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawRect(530,544,200,38);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("QUIT", 572, 534);
+					if(intCurrentMouseButton == 1){
+						strChoice = "q";
+					}
+				}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 446) && (intMouseY <= 482))){
+					//Watch Button
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawRect(530,444,200,38);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("WATCH", 557, 434);
+					if(intCurrentMouseButton == 1){
+						strChoice = "w";
+					}
+				}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 346) && (intMouseY <= 382))){
+					// Score Button
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawRect(530,344,200,38);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("SCORES", 537, 334);
+					if(intCurrentMouseButton == 1){
+						strChoice = "v";
+					}
+				}else if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 246) && (intMouseY <= 282))){
+					//Play Button
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawRect(530,244,200,38);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("PLAY", 572, 234);
+					if(intCurrentMouseButton == 1){
+						strChoice = "p";
+					}
+				}else{
+					//Display When Buttons Are Not Being Hovered
+					con.setDrawColor(Color.WHITE);
+					con.drawRect(530,544,200,38);
 
-				con.drawRect(530,444,200,38);
+					con.drawRect(530,444,200,38);
 
-				con.drawRect(530,344,200,38);
+					con.drawRect(530,344,200,38);
 
-				con.drawRect(530,244,200,38);
+					con.drawRect(530,244,200,38);
+					
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString("PLAY", 572, 234);
+					con.drawString("SCORES", 537, 334);
+					con.drawString("WATCH", 557, 434);
+					con.drawString("QUIT", 572, 534);
+				}
+			}
+			
+			con.clear();
+			
+			if(strChoice.equals("p")){
+				//Game Screen
+				while(strChoice.equals("p")){
+				con.println("Game");
 				
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawString("PLAY", 572, 234);
-				con.drawString("SCORES", 537, 334);
-				con.drawString("WATCH", 557, 434);
-				con.drawString("HELP", 572, 534);
+				con.println("are you done?");
+				String strDone = con.readLine();
+					if(strDone.equals("no")){
+					
+					}else{
+						strChoice = "";
+					}
+				}
+				
+			}else if(strChoice.equals("v")){
+				//High Score Screen
+				
+				con.println("high scores");
+				con.sleep(1000);
+				
+			}else if(strChoice.equals("w")){
+				//Replay Screen
+				
+				con.println("replay");
+				con.sleep(1000);
+				
+			}else{
+				//Quit Screen
+				
+				
 			}
 		}
-		
-		con.clear();
-		
-		if(strChoice.equals("p")){
-			//Game Screen
-			
-			con.println("Game");
-			
-		}else if(strChoice.equals("s")){
-			//High Score Screen
-			
-			con.println("high scores");
-			
-		}else if(strChoice.equals("w")){
-			//Replay Screen
-			
-			con.println("replay");
-			
-		}else{
-			//Help Screen
-			
-			con.println("HELP");
-			
-		}
+		con.println("The end");
 	}
 }
