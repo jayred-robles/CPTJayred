@@ -11,12 +11,10 @@ public class CPTJayred{
 		int intMouseX;
 		int intMouseY;
 		int intCurrentMouseButton;
+		int intLines = 0;
 		
-		//Importing and exporting other files
-		
-		//Highscores
-		TextInputFile txtScoreBoard = new TextInputFile("Highscores.txt");
-		TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt");
+	
+		//TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt",true );
 		
 		//Uploading font
 		String strChoice = "";
@@ -140,66 +138,51 @@ public class CPTJayred{
 					}
 				}
 				strChoice = "p";
-				Game(con);
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawString("Enter Player 1's Name", 57, 334);
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.print("		");
-				String strName1 = con.readLine();
-				
-				con.clear();
-				con.sleep(500);
-				Game(con);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString("Enter Player 2's Name", 607, 334);
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.println("");
-				con.print("								");
-				String strName2 = con.readLine();
+				char chrNameChoice = ' ';
+				String strName1 = "";
+				String strName2 = "";
+				while(chrNameChoice != 'y'){
+					Game(con);
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString("Enter Player 1's Name", 57, 334);
+					con.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+					con.print("		");
+					strName1 = con.readLine();
+					
+					con.clear();
+					con.sleep(500);
+					Game(con);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("Enter Player 2's Name", 607, 334);
+					con.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+					con.print("								");
+					strName2 = con.readLine();
+					Game(con);
+					con.clear();
+					
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("Player 2: "+strName2, 807, 40);
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString("Player 1: "+strName1, 57, 40);
+					con.setDrawColor(Color.WHITE);
+					con.drawString("Are These Names Good?", 332, 484);
+					con.drawString("Press 'y' To Continue:", 332, 534);
+					chrNameChoice = con.getChar();
+					
+				}
 				
 				while(strChoice.equals("p")){
 				con.clear();
 				Game(con);
+				con.setDrawColor(new Color (52, 232, 248));
+				con.drawString(strName2, 1107, 40);
+				con.setDrawColor(new Color (252, 200, 20));
+				con.drawString(strName1, 57, 40);
 				con.println("Game");
 				
-				con.println("are you done?");
+				con.println("Play Again?");
 				String strDone = con.readLine();
-					if(strDone.equals("no")){
+					if(strDone.equals("yes")){
 						
 					}else{
 						while(!strChoice.equals("b")){
@@ -230,17 +213,65 @@ public class CPTJayred{
 				
 			}else if(strChoice.equals("v")){
 			//High Score Screen
+			TextInputFile txtBoardLines = new TextInputFile("Highscores.txt");
 			HighScores(con);
+			String strHighName;
+			int intScore; 
+			intLines = 0;
+			
+			int intScoreY = 150;
+			
+			int intRead;
+			String strRead;
+			if(intLines == 0){
+				while(txtBoardLines.eof() == false){
+					strRead = txtBoardLines.readLine();
+					intRead = txtBoardLines.readInt();
+					intLines = intLines + 1;
+					
+				}
+			}
+			txtBoardLines.close();
+			
+			TextInputFile txtScoreBoard = new TextInputFile("Highscores.txt");
+			String strLeaderboard[][] = new String[intLines][2];
+			con.setDrawColor(new Color (252, 200, 20));
+			
+			for(int intCount = 0; intCount < intLines; intCount++){
+				strLeaderboard[intCount][0] = txtScoreBoard.readLine();
+				strLeaderboard[intCount][1] = txtScoreBoard.readLine();
+			}
+			txtScoreBoard.close();
+			strLeaderboard = bubbleSort(strLeaderboard, intLines);
+			
+			int intRow;
+			int intCounter = 1;
+			
+			if(intLines > 10){
+				intLines = 10;
+			}
+			
+			for(intRow = 0; intRow < intLines; intRow++){
+				con.drawString((intCounter+". "+strLeaderboard[intRow][0]+"                     ").substring(0,10), 450, intScoreY);
+				con.drawString((strLeaderboard[intRow][1]+"                     ").substring(0,10), 700, intScoreY);
+				intScoreY = intScoreY + 40;
+				intCounter = intCounter + 1;
+			}
+			
+			
+			
+			
+			
 			while(!strChoice.equals("b")){
 				int intMouseXw = con.currentMouseX();
 				int intMouseYw = con.currentMouseY();
 				int intCurrentMouseButtonw = con.currentMouseButton();
-				if(((intMouseXw >= 512) && (intMouseXw <= 710)) && ((intMouseYw >= 546) && (intMouseYw <= 582))){
+				if(((intMouseXw >= 532) && (intMouseXw <= 730)) && ((intMouseYw >= 580) && (intMouseYw <= 618))){
 						//Back Button
 						con.setDrawColor(new Color (252, 200, 20));
-						con.drawRect(530,544,200,38);
+						con.drawRect(530,580,200,38);
 						con.setDrawColor(new Color (52, 232, 248));
-						con.drawString("BACK", 572, 534);
+						con.drawString("BACK", 572, 570);
 						if(intCurrentMouseButtonw == 1){
 							strChoice = "b";
 							con.sleep(300);
@@ -248,9 +279,9 @@ public class CPTJayred{
 				}else{
 					con.setDrawColor(new Color (252, 200, 20));
 					con.setDrawColor(Color.WHITE);
-					con.drawString("BACK", 572, 534);	
+					con.drawString("BACK", 572, 570);	
 					con.setDrawColor(Color.WHITE);
-					con.drawRect(530,544,200,38);
+					con.drawRect(530,580,200,38);
 				}
 				con.repaint();
 			}
@@ -284,9 +315,9 @@ public class CPTJayred{
 				}
 				
 			}else{
-			//Quit Screen
-			End(con);
-			con.println("");
+				//Quit Screen
+				End(con);
+				
 			}
 		}
 	}
@@ -313,7 +344,37 @@ public class CPTJayred{
 	public static void End(Console con){
 		BufferedImage imgEnd = con.loadImage("End.jpg");
 		con.drawImage(imgEnd, 0, 0);
+		con.println("");
+		con.sleep(2000);
+		con.closeConsole();
 		
+	}
+	
+    public static String[][] bubbleSort(String strSortedArray[][], int intCount){
+	int intBelow;
+	int intCurrent;
+	int intCounter;
+	int intCounter2;
+	String strTemp;
+
+	for(intCounter2 = 0; intCounter2 < intCount-1; intCounter2++){
+		for(intCounter = 0; intCounter < intCount-intCounter2-1; intCounter++){
+			intBelow = Integer.parseInt(strSortedArray[intCounter+1][1]);
+			intCurrent = Integer.parseInt(strSortedArray[intCounter][1]);
+			if(intBelow > intCurrent){
+				strTemp = strSortedArray[intCounter+1][0];
+				strSortedArray[intCounter+1][0] = strSortedArray[intCounter][0];
+				strSortedArray[intCounter][0] = strTemp;
+
+				strTemp = strSortedArray[intCounter+1][1];
+				strSortedArray[intCounter+1][1] = strSortedArray[intCounter][1];
+				strSortedArray[intCounter][1] = strTemp;
+			}
+		}
+	}
+
+	//Returns your sorted array
+	return strSortedArray;
 	}
 }
 
