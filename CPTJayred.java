@@ -35,14 +35,14 @@ public class CPTJayred{
 			con.clear();
 			
 			while(strChoice.equals("")){
-			//Button font
-			Font fntSquare2 = con.loadFont("square.ttf", 50);
-			con.setDrawFont(fntSquare2);
-			
-			intMouseX = con.currentMouseX();
-			intMouseY = con.currentMouseY();
-			intCurrentMouseButton = con.currentMouseButton();
-			con.repaint();
+				//Button font
+				Font fntSquare2 = con.loadFont("square.ttf", 50);
+				con.setDrawFont(fntSquare2);
+				
+				intMouseX = con.currentMouseX();
+				intMouseY = con.currentMouseY();
+				intCurrentMouseButton = con.currentMouseButton();
+				con.repaint();
 				if(((intMouseX >= 512) && (intMouseX <= 710)) && ((intMouseY >= 546) && (intMouseY <= 582))){
 					//Help Button
 					con.setDrawColor(new Color (252, 200, 20));
@@ -171,17 +171,43 @@ public class CPTJayred{
 					
 				}
 				
-				while(strChoice.equals("p")){
-				con.clear();
-				Game(con);
-				con.setDrawColor(new Color (52, 232, 248));
-				con.drawString(strName2, 1107, 40);
-				con.setDrawColor(new Color (252, 200, 20));
-				con.drawString(strName1, 57, 40);
-				con.println("Game");
 				
-				con.println("Play Again?");
-				String strDone = con.readLine();
+				int intRows = 6;
+				int intColumns = 7;
+				int intBoard[][] = new int[intRows][intColumns];
+				
+				while(strChoice.equals("p")){
+					con.clear();
+					Game(con);
+					Board(con);
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString(strName2, 1107, 40);
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString(strName1, 57, 40);
+					
+					char chrWin = ' ';
+					int intTurn = 1;
+					int intMove = 0;
+					
+					while(chrWin != 'y'){
+						if(intTurn % 2 == 1){
+							con.setDrawColor(new Color (252, 200, 20));
+							con.fillOval(55,130,140,140);
+						}else{
+							con.setDrawColor(new Color (52, 232, 248));
+							con.fillOval(1085,130,140,140);
+						}
+						intMove = con.readInt();
+						if(intTurn == 12){
+							chrWin = 'y';
+						}
+						intTurn = intTurn + 1;
+						con.setDrawColor(Color.BLACK);
+						
+					}
+
+					con.println("Play Again?");
+					String strDone = con.readLine();
 					if(strDone.equals("yes")){
 						
 					}else{
@@ -189,12 +215,12 @@ public class CPTJayred{
 							int intMouseXw = con.currentMouseX();
 							int intMouseYw = con.currentMouseY();
 							int intCurrentMouseButtonw = con.currentMouseButton();
-							if(((intMouseXw >= 512) && (intMouseXw <= 710)) && ((intMouseYw >= 546) && (intMouseYw <= 582))){
+							if(((intMouseXw >= 12) && (intMouseXw <= 210)) && ((intMouseYw >= 546) && (intMouseYw <= 582))){
 								//Back Button
 								con.setDrawColor(new Color (252, 200, 20));
-								con.drawRect(530,544,200,38);
+								con.drawRect(30,544,200,38);
 								con.setDrawColor(new Color (52, 232, 248));
-								con.drawString("BACK", 572, 534);
+								con.drawString("BACK", 72, 534);
 								if(intCurrentMouseButtonw == 1){
 									strChoice = "b";
 									con.sleep(300);
@@ -202,9 +228,9 @@ public class CPTJayred{
 							}else{
 								con.setDrawColor(new Color (252, 200, 20));
 								con.setDrawColor(Color.WHITE);
-								con.drawString("BACK", 572, 534);	
+								con.drawString("BACK", 72, 534);	
 								con.setDrawColor(Color.WHITE);
-								con.drawRect(530,544,200,38);
+								con.drawRect(30,544,200,38);
 							}
 							con.repaint();
 						}
@@ -212,81 +238,81 @@ public class CPTJayred{
 				}
 				
 			}else if(strChoice.equals("v")){
-			//High Score Screen
-			TextInputFile txtBoardLines = new TextInputFile("Highscores.txt");
-			HighScores(con);
-			String strHighName;
-			int intScore; 
-			intLines = 0;
-			
-			int intScoreY = 150;
-			
-			int intRead;
-			String strRead;
-			if(intLines == 0){
-				while(txtBoardLines.eof() == false){
-					strRead = txtBoardLines.readLine();
-					intRead = txtBoardLines.readInt();
-					intLines = intLines + 1;
-					
-				}
-			}
-			txtBoardLines.close();
-			
-			TextInputFile txtScoreBoard = new TextInputFile("Highscores.txt");
-			String strLeaderboard[][] = new String[intLines][2];
-			con.setDrawColor(new Color (252, 200, 20));
-			
-			for(int intCount = 0; intCount < intLines; intCount++){
-				strLeaderboard[intCount][0] = txtScoreBoard.readLine();
-				strLeaderboard[intCount][1] = txtScoreBoard.readLine();
-			}
-			txtScoreBoard.close();
-			strLeaderboard = bubbleSort(strLeaderboard, intLines);
-			
-			int intRow;
-			int intCounter = 1;
-			
-			if(intLines > 10){
-				intLines = 10;
-			}
-			
-			for(intRow = 0; intRow < intLines; intRow++){
-				con.drawString((intCounter+". "+strLeaderboard[intRow][0]+"                     ").substring(0,10), 450, intScoreY);
-				con.drawString((strLeaderboard[intRow][1]+"                     ").substring(0,10), 700, intScoreY);
-				intScoreY = intScoreY + 40;
-				intCounter = intCounter + 1;
-			}
-			
-			
-			
-			
-			
-			while(!strChoice.equals("b")){
-				int intMouseXw = con.currentMouseX();
-				int intMouseYw = con.currentMouseY();
-				int intCurrentMouseButtonw = con.currentMouseButton();
-				if(((intMouseXw >= 532) && (intMouseXw <= 730)) && ((intMouseYw >= 580) && (intMouseYw <= 618))){
-						//Back Button
-						con.setDrawColor(new Color (252, 200, 20));
-						con.drawRect(530,580,200,38);
-						con.setDrawColor(new Color (52, 232, 248));
-						con.drawString("BACK", 572, 570);
-						if(intCurrentMouseButtonw == 1){
-							strChoice = "b";
-							con.sleep(300);
-						}
-				}else{
-					con.setDrawColor(new Color (252, 200, 20));
-					con.setDrawColor(Color.WHITE);
-					con.drawString("BACK", 572, 570);	
-					con.setDrawColor(Color.WHITE);
-					con.drawRect(530,580,200,38);
-				}
-				con.repaint();
-			}
-			
+				//High Score Screen
+				TextInputFile txtBoardLines = new TextInputFile("Highscores.txt");
+				HighScores(con);
+				String strHighName;
+				int intScore; 
+				intLines = 0;
 				
+				int intScoreY = 150;
+				
+				int intRead;
+				String strRead;
+				if(intLines == 0){
+					while(txtBoardLines.eof() == false){
+						strRead = txtBoardLines.readLine();
+						intRead = txtBoardLines.readInt();
+						intLines = intLines + 1;
+						
+					}
+				}
+				txtBoardLines.close();
+				
+				TextInputFile txtScoreBoard = new TextInputFile("Highscores.txt");
+				String strLeaderboard[][] = new String[intLines][2];
+				con.setDrawColor(new Color (252, 200, 20));
+				
+				for(int intCount = 0; intCount < intLines; intCount++){
+					strLeaderboard[intCount][0] = txtScoreBoard.readLine();
+					strLeaderboard[intCount][1] = txtScoreBoard.readLine();
+				}
+				txtScoreBoard.close();
+				strLeaderboard = bubbleSort(strLeaderboard, intLines);
+				
+				int intRow;
+				int intCounter = 1;
+				
+				if(intLines > 10){
+					intLines = 10;
+				}
+				
+				for(intRow = 0; intRow < intLines; intRow++){
+					con.drawString((intCounter+". "+strLeaderboard[intRow][0]+"                     ").substring(0,10), 450, intScoreY);
+					con.drawString((strLeaderboard[intRow][1]+"                     ").substring(0,10), 700, intScoreY);
+					intScoreY = intScoreY + 40;
+					intCounter = intCounter + 1;
+				}
+				
+				
+				
+				
+				
+				while(!strChoice.equals("b")){
+					int intMouseXw = con.currentMouseX();
+					int intMouseYw = con.currentMouseY();
+					int intCurrentMouseButtonw = con.currentMouseButton();
+					if(((intMouseXw >= 532) && (intMouseXw <= 730)) && ((intMouseYw >= 580) && (intMouseYw <= 618))){
+							//Back Button
+							con.setDrawColor(new Color (252, 200, 20));
+							con.drawRect(530,580,200,38);
+							con.setDrawColor(new Color (52, 232, 248));
+							con.drawString("BACK", 572, 570);
+							if(intCurrentMouseButtonw == 1){
+								strChoice = "b";
+								con.sleep(300);
+							}
+					}else{
+						con.setDrawColor(new Color (252, 200, 20));
+						con.setDrawColor(Color.WHITE);
+						con.drawString("BACK", 572, 570);	
+						con.setDrawColor(Color.WHITE);
+						con.drawRect(530,580,200,38);
+					}
+					con.repaint();
+				}
+				
+					
 			}else if(strChoice.equals("w")){
 			//Replay Screen
 			Game(con);
@@ -320,6 +346,7 @@ public class CPTJayred{
 				
 			}
 		}
+		System.out.println(strChoice);
 	}
 	 public static void MainMenu(Console con){
 		BufferedImage imgMain = con.loadImage("MainMenu.jpg");
@@ -372,9 +399,66 @@ public class CPTJayred{
 			}
 		}
 	}
-
-	//Returns your sorted array
 	return strSortedArray;
 	}
+	public static void Board(Console con){
+		con.setDrawColor(Color.WHITE);
+		con.fillRect(270,30,720,620);
+		con.setDrawColor(Color.BLACK);
+		
+		int intRow = 290;
+		int intCollumn = 50;
+		//Row 1
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		//Row 2
+		intRow = 290;
+		intCollumn = 150;
+		
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		
+		//Row 3
+		intRow = 290;
+		intCollumn = 250;
+		
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		
+		//Row 4
+		intRow = 290;
+		intCollumn = 350;
+		
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		
+		//Row 5
+		intRow = 290;
+		intCollumn = 450;
+		
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		
+		//Row 6
+		intRow = 290;
+		intCollumn = 550;
+		
+		while(intRow != 990){
+			con.fillOval(intRow,intCollumn,80,80);
+			intRow = intRow+100;
+		}
+		
+	}
 }
+
 
