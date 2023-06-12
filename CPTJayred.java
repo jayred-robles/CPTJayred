@@ -172,14 +172,16 @@ public class CPTJayred{
 				}
 				
 				
-				int intRows = 6;
-				int intColumns = 7;
-				int intBoard[][] = new int[intRows][intColumns];
 				
 				while(strChoice.equals("p")){
 					con.clear();
 					Game(con);
 					Board(con);
+					
+					int intRows = 6;
+					int intColumns = 7;
+					int intBoard[][] = new int[intRows][intColumns];
+					
 					con.setDrawColor(new Color (52, 232, 248));
 					con.drawString(strName2, 1107, 40);
 					con.setDrawColor(new Color (252, 200, 20));
@@ -193,16 +195,51 @@ public class CPTJayred{
 						if(intTurn % 2 == 1){
 							con.setDrawColor(new Color (252, 200, 20));
 							con.fillOval(55,130,140,140);
+							con.drawString("Your Turn:",20,300);
 						}else{
 							con.setDrawColor(new Color (52, 232, 248));
 							con.fillOval(1085,130,140,140);
+							con.drawString("Your Turn:",1020,300);
 						}
 						intMove = con.readInt();
-						if(intTurn == 12){
+						if((intMove <= 0) || (intMove >= 8)){
+							while((intMove <= 0) || (intMove >= 8)){
+								con.clear();
+								con.println("Not Valid");
+								intMove = con.readInt();
+							
+							
+							}
+						}
+						int intStack = 0;
+						while(intBoard[intStack][intMove]>0){
+							intStack = intStack+1;
+							if(intStack > 5){
+								intStack = 0;
+								con.clear();
+								con.println("Invalid: choose another collumn");
+								intMove = con.readInt();
+							}
+						}
+						
+						intBoard[intStack][intMove] = (intTurn % 2)+1;
+						if(intTurn % 2 == 1){
+							con.setDrawColor(new Color (252, 200, 20));
+						}else{
+							con.setDrawColor(new Color (52, 232, 248));
+						}
+						con.fillOval(290+((intMove-1)*100),550-((intStack)*100),80,80);
+						
+						if(intMove == 7){
 							chrWin = 'y';
 						}
+						
+						
 						intTurn = intTurn + 1;
 						con.setDrawColor(Color.BLACK);
+						con.fillOval(55,130,140,140);
+						con.fillOval(1085,130,140,140);
+						con.clear();
 						
 					}
 
