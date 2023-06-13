@@ -13,6 +13,12 @@ public class CPTJayred{
 		int intCurrentMouseButton;
 		int intLines = 0;
 		
+		double dblWins1 = 0.00;
+		double dblWins2 = 0.00;
+		double dblGames = 0.00;
+		double dblP2Wins;
+		double dblP1Wins;
+		
 	
 		//TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt",true );
 		
@@ -177,6 +183,16 @@ public class CPTJayred{
 					con.clear();
 					Game(con);
 					Board(con);
+					dblGames = dblGames + 1;
+
+					con.setDrawColor(Color.WHITE);
+					con.drawString("1",320,640);
+					con.drawString("2",420,640);
+					con.drawString("3",520,640);
+					con.drawString("4",620,640);
+					con.drawString("5",720,640);
+					con.drawString("6",820,640);
+					con.drawString("7",920,640);
 					
 					int intRows = 6;
 					int intColumns = 7;
@@ -192,31 +208,43 @@ public class CPTJayred{
 					int intMove = 0;
 					
 					while(chrWin != 'y'){
+						
+						con.println("						Game "+dblGames);
+						
 						if(intTurn % 2 == 1){
 							con.setDrawColor(new Color (252, 200, 20));
 							con.fillOval(55,130,140,140);
 							con.drawString("Your Turn:",20,300);
+							
+							con.setDrawColor(Color.black);
+							con.drawString("Your Turn:",1020,300);
 						}else{
 							con.setDrawColor(new Color (52, 232, 248));
 							con.fillOval(1085,130,140,140);
 							con.drawString("Your Turn:",1020,300);
+							
+							con.setDrawColor(Color.black);
+							con.drawString("Your Turn:",20,300);
 						}
 						intMove = con.readInt();
 						if((intMove <= 0) || (intMove >= 8)){
 							while((intMove <= 0) || (intMove >= 8)){
 								con.clear();
+								con.println("						Game "+dblGames);
 								con.println("Not Valid");
 								intMove = con.readInt();
 							
 							
 							}
 						}
+						intMove = intMove - 1;
 						int intStack = 0;
 						while(intBoard[intStack][intMove]>0){
 							intStack = intStack+1;
 							if(intStack > 5){
 								intStack = 0;
 								con.clear();
+								con.println("						Game "+dblGames);
 								con.println("Invalid: choose another collumn");
 								intMove = con.readInt();
 							}
@@ -228,24 +256,56 @@ public class CPTJayred{
 						}else{
 							con.setDrawColor(new Color (52, 232, 248));
 						}
-						con.fillOval(290+((intMove-1)*100),550-((intStack)*100),80,80);
+						con.fillOval(290+((intMove)*100),550-((intStack)*100),80,80);
 						
-						if(intMove == 7){
-							chrWin = 'y';
-						}
-						
+						chrWin = chrCheck(intBoard, intStack, intMove, intTurn);
 						
 						intTurn = intTurn + 1;
 						con.setDrawColor(Color.BLACK);
 						con.fillOval(55,130,140,140);
 						con.fillOval(1085,130,140,140);
+						con.drawString("Your Turn:",20,300);
+						con.drawString("Your Turn:",1020,300);
 						con.clear();
 						
 					}
-
+					
+					char chrDone = ' ';
+					
+					
+					
+					if(intTurn % 2 == 0){
+						con.setDrawColor(new Color (252, 200, 20));
+						dblWins1 = dblWins1 +1;
+						con.drawString("YOU WIN",20,300);
+						
+					}else{
+						dblWins2 = dblWins2 +1;
+						con.setDrawColor(new Color (52, 232, 248));
+						con.drawString("YOU WIN",1020,300);
+					}
+					dblP1Wins = ((dblWins1/dblGames)*100.00);
+					dblP2Wins = ((dblWins2/dblGames)*100.00);
+					
+					con.setDrawColor(new Color (52, 232, 248));
+					con.drawString("WINS",1020,350);
+					con.drawString("WIN %",1020,450);
+					con.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+					con.println("	"+dblWins1+"										"+dblWins2);
+					con.print("\n\n\n");
+					con.println("	"+dblP1Wins+"										"+dblP2Wins);
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString("WINS",20,350);
+					con.drawString("WIN %",20,450);
+					
+					
+					
+					con.sleep(1000);
 					con.println("Play Again?");
-					String strDone = con.readLine();
-					if(strDone.equals("yes")){
+					while(chrDone != 'y' && chrDone != 'n'){
+						chrDone = con.getChar();
+					}
+					if(chrDone == 'y'){
 						
 					}else{
 						while(!strChoice.equals("b")){
@@ -495,6 +555,59 @@ public class CPTJayred{
 			intRow = intRow+100;
 		}
 		
+	}
+	public static char chrCheck(int intBoard[][], int intStack, int intMove, int intTurn){
+		double dblWin = 0;
+		for(int intCheckY = 0; intCheckY < 6; intCheckY++){
+			if(intBoard[intCheckY][intMove] == (intTurn % 2)+1){
+				dblWin = dblWin + 1;	
+			}else{
+				dblWin = 0;
+					
+			}
+			
+			if(dblWin == 4){
+			return 'y';
+			}
+			
+		}	
+		for(int intCheckX = 0; intCheckX < 7; intCheckX++){
+			if(intBoard[intStack][intCheckX] == (intTurn % 2)+1){
+					dblWin = dblWin + 1;	
+			}else{
+				dblWin = 0;
+			}
+			if(dblWin == 4){
+				return 'y';
+			}
+		}	
+		
+		for (int intCheckD = -4; intCheckD <= 4; intCheckD++) {
+			if((intCheckD + intStack >= 0) && (intCheckD + intStack < 6) && (intCheckD + intMove >= 0) && (intCheckD + intMove < 7)) {
+				if(intBoard[intStack + intCheckD][intMove + intCheckD] == (intTurn % 2) + 1) {
+					dblWin = dblWin + 1;
+					if(dblWin == 4) {
+						return 'y';
+					}
+				}else{
+					dblWin = 0;
+				}
+			}
+		}
+		
+		for (int intCheckD2 = -4; intCheckD2 <= 4; intCheckD2++) {
+			if((intStack - intCheckD2 >= 0) && (intStack - intCheckD2 < 6) && (intMove + intCheckD2 >= 0) && (intMove + intCheckD2 < 7)) {
+				if(intBoard[intStack - intCheckD2][intMove + intCheckD2] == (intTurn % 2) + 1) {
+					dblWin = dblWin + 1;
+					if(dblWin == 4) {
+						return 'y';
+					}
+				}else{
+					dblWin = 0;
+				}
+			}
+		}
+		return ' ';		
 	}
 }
 
