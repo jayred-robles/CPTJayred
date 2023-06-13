@@ -13,14 +13,12 @@ public class CPTJayred{
 		int intCurrentMouseButton;
 		int intLines = 0;
 		
-		double dblWins1 = 0.00;
-		double dblWins2 = 0.00;
-		double dblGames = 0.00;
+		
 		double dblP2Wins;
 		double dblP1Wins;
 		
 	
-		//TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt",true );
+		
 		
 		//Uploading font
 		String strChoice = "";
@@ -144,11 +142,16 @@ public class CPTJayred{
 					}
 				}
 				strChoice = "p";
+				double dblWins1 = 0.00;
+				double dblWins2 = 0.00;
+				double dblGames = 0.00;
 				char chrNameChoice = ' ';
 				String strName1 = "";
 				String strName2 = "";
 				while(chrNameChoice != 'y'){
+					
 					Game(con);
+					
 					con.setDrawColor(new Color (252, 200, 20));
 					con.drawString("Enter Player 1's Name", 57, 334);
 					con.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -180,12 +183,22 @@ public class CPTJayred{
 				
 				
 				while(strChoice.equals("p")){
+					char chrRecord = ' ';
+					con.clear();
+					con.setDrawColor(Color.WHITE);
+					con.drawString("Would you like to record this game? 'y' / 'n'", 57, 334);
+					con.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+					con.print("		");
+					while((chrRecord != 'y') && (chrRecord != 'n')){
+						chrRecord = con.readChar();
+					}
+					
 					con.clear();
 					Game(con);
 					Board(con);
 					dblGames = dblGames + 1;
 
-					con.setDrawColor(Color.WHITE);
+					
 					con.drawString("1",320,640);
 					con.drawString("2",420,640);
 					con.drawString("3",520,640);
@@ -260,7 +273,14 @@ public class CPTJayred{
 						
 						chrWin = chrCheck(intBoard, intStack, intMove, intTurn);
 						
-						intTurn = intTurn + 1;
+						
+						if(intTurn == 42){
+							chrWin = 'y';
+						}else{
+						
+							intTurn = intTurn + 1;
+						}
+						
 						con.setDrawColor(Color.BLACK);
 						con.fillOval(55,130,140,140);
 						con.fillOval(1085,130,140,140);
@@ -274,7 +294,12 @@ public class CPTJayred{
 					
 					
 					
-					if(intTurn % 2 == 0){
+					if(intTurn == 42){
+					
+						con.setDrawColor(Color.WHITE);
+						con.drawString("TIE",20,300);	
+						
+					}else if(intTurn % 2 == 0){
 						con.setDrawColor(new Color (252, 200, 20));
 						dblWins1 = dblWins1 +1;
 						con.drawString("YOU WIN",20,300);
@@ -284,8 +309,8 @@ public class CPTJayred{
 						con.setDrawColor(new Color (52, 232, 248));
 						con.drawString("YOU WIN",1020,300);
 					}
-					dblP1Wins = ((dblWins1/dblGames)*100.00);
-					dblP2Wins = ((dblWins2/dblGames)*100.00);
+					dblP1Wins = Math.round((dblWins1/dblGames)*100.00);
+					dblP2Wins = Math.round((dblWins2/dblGames)*100.00);
 					
 					con.setDrawColor(new Color (52, 232, 248));
 					con.drawString("WINS",1020,350);
@@ -293,22 +318,32 @@ public class CPTJayred{
 					con.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 					con.println("	"+dblWins1+"										"+dblWins2);
 					con.print("\n\n\n");
-					con.println("	"+dblP1Wins+"										"+dblP2Wins);
+					con.println("	"+dblP1Wins+"%										"+dblP2Wins+"%");
 					con.setDrawColor(new Color (252, 200, 20));
 					con.drawString("WINS",20,350);
 					con.drawString("WIN %",20,450);
 					
-					
-					
-					con.sleep(1000);
-					con.println("Play Again?");
+
+					con.setDrawColor(Color.WHITE);
+					con.drawString("REMATCH?",1000,520);
+					con.drawString("'Y' / 'N'",1000,570);
 					while(chrDone != 'y' && chrDone != 'n'){
 						chrDone = con.getChar();
 					}
 					if(chrDone == 'y'){
 						
 					}else{
+						
+						TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt",true );
+							txtRecordScore.println(strName1);
+							txtRecordScore.println(dblWins1);
+							txtRecordScore.println(strName2);
+							txtRecordScore.println(dblWins2);
+							txtRecordScore.close();
+							
 						while(!strChoice.equals("b")){
+							
+							
 							int intMouseXw = con.currentMouseX();
 							int intMouseYw = con.currentMouseY();
 							int intCurrentMouseButtonw = con.currentMouseButton();
@@ -344,12 +379,12 @@ public class CPTJayred{
 				
 				int intScoreY = 150;
 				
-				int intRead;
+				double dblRead;
 				String strRead;
 				if(intLines == 0){
 					while(txtBoardLines.eof() == false){
 						strRead = txtBoardLines.readLine();
-						intRead = txtBoardLines.readInt();
+						dblRead = txtBoardLines.readDouble();
 						intLines = intLines + 1;
 						
 					}
@@ -461,7 +496,7 @@ public class CPTJayred{
 		con.repaint();
 	}
 	public static void Help(Console con){
-		BufferedImage imgHelp = con.loadImage("Game.jpg");
+		BufferedImage imgHelp = con.loadImage("Help.jpg");
 		con.drawImage(imgHelp, 0, 0);
 		
 	}
@@ -475,17 +510,17 @@ public class CPTJayred{
 	}
 	
     public static String[][] bubbleSort(String strSortedArray[][], int intCount){
-	int intBelow;
-	int intCurrent;
+	double dblBelow;
+	double dblCurrent;
 	int intCounter;
 	int intCounter2;
 	String strTemp;
 
 	for(intCounter2 = 0; intCounter2 < intCount-1; intCounter2++){
 		for(intCounter = 0; intCounter < intCount-intCounter2-1; intCounter++){
-			intBelow = Integer.parseInt(strSortedArray[intCounter+1][1]);
-			intCurrent = Integer.parseInt(strSortedArray[intCounter][1]);
-			if(intBelow > intCurrent){
+			dblBelow = Double.parseDouble(strSortedArray[intCounter+1][1]);
+			dblCurrent = Double.parseDouble(strSortedArray[intCounter][1]);
+			if(dblBelow > dblCurrent){
 				strTemp = strSortedArray[intCounter+1][0];
 				strSortedArray[intCounter+1][0] = strSortedArray[intCounter][0];
 				strSortedArray[intCounter][0] = strTemp;
@@ -571,9 +606,11 @@ public class CPTJayred{
 			}
 			
 		}	
+		
+		dblWin = 0;
 		for(int intCheckX = 0; intCheckX < 7; intCheckX++){
 			if(intBoard[intStack][intCheckX] == (intTurn % 2)+1){
-					dblWin = dblWin + 1;	
+					dblWin = dblWin + 1;
 			}else{
 				dblWin = 0;
 			}
@@ -581,12 +618,12 @@ public class CPTJayred{
 				return 'y';
 			}
 		}	
-		
-		for (int intCheckD = -4; intCheckD <= 4; intCheckD++) {
+		dblWin = 0;
+		for(int intCheckD = -4; intCheckD <= 4; intCheckD++) {
 			if((intCheckD + intStack >= 0) && (intCheckD + intStack < 6) && (intCheckD + intMove >= 0) && (intCheckD + intMove < 7)) {
 				if(intBoard[intStack + intCheckD][intMove + intCheckD] == (intTurn % 2) + 1) {
 					dblWin = dblWin + 1;
-					if(dblWin == 4) {
+					if(dblWin == 4){
 						return 'y';
 					}
 				}else{
@@ -594,7 +631,7 @@ public class CPTJayred{
 				}
 			}
 		}
-		
+		dblWin = 0;
 		for (int intCheckD2 = -4; intCheckD2 <= 4; intCheckD2++) {
 			if((intStack - intCheckD2 >= 0) && (intStack - intCheckD2 < 6) && (intMove + intCheckD2 >= 0) && (intMove + intCheckD2 < 7)) {
 				if(intBoard[intStack - intCheckD2][intMove + intCheckD2] == (intTurn % 2) + 1) {
