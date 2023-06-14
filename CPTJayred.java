@@ -17,6 +17,9 @@ public class CPTJayred{
 		double dblP2Wins;
 		double dblP1Wins;
 		
+		String strName1;
+		String strName2;
+		
 	
 		
 		
@@ -146,8 +149,8 @@ public class CPTJayred{
 				double dblWins2 = 0.00;
 				double dblGames = 0.00;
 				char chrNameChoice = ' ';
-				String strName1 = "";
-				String strName2 = "";
+				strName1 = "";
+				strName2 = "";
 				while(chrNameChoice != 'y'){
 					
 					Game(con);
@@ -183,22 +186,40 @@ public class CPTJayred{
 				
 				
 				while(strChoice.equals("p")){
+					Game(con);
 					char chrRecord = ' ';
 					con.clear();
 					con.setDrawColor(Color.WHITE);
 					con.drawString("Would you like to record this game? 'y' / 'n'", 57, 334);
 					con.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 					con.print("		");
+					
 					while((chrRecord != 'y') && (chrRecord != 'n')){
-						chrRecord = con.readChar();
+						chrRecord = con.getChar();
 					}
+					if(chrRecord == 'y'){
+						
+						TextOutputFile txtClear = new TextOutputFile("Replay.txt");
+						txtClear.close();
+						
+						TextOutputFile txtReplay = new TextOutputFile("Replay.txt", true);
+						txtReplay.println(strName1);
+						txtReplay.println(strName2);
+						txtReplay.close();
+						
+					}else{
+						
+						
+						
+					}
+		
 					
 					con.clear();
 					Game(con);
 					Board(con);
 					dblGames = dblGames + 1;
 
-					
+					con.setDrawColor(Color.WHITE);
 					con.drawString("1",320,640);
 					con.drawString("2",420,640);
 					con.drawString("3",520,640);
@@ -240,6 +261,8 @@ public class CPTJayred{
 							con.drawString("Your Turn:",20,300);
 						}
 						intMove = con.readInt();
+						
+						
 						if((intMove <= 0) || (intMove >= 8)){
 							while((intMove <= 0) || (intMove >= 8)){
 								con.clear();
@@ -261,6 +284,19 @@ public class CPTJayred{
 								con.println("Invalid: choose another collumn");
 								intMove = con.readInt();
 							}
+						}
+						
+						if(chrRecord == 'y'){
+						
+							TextOutputFile txtReplayS = new TextOutputFile("Replay.txt", true);
+							txtReplayS.println(intMove);
+							txtReplayS.close();
+						
+						
+						}else{
+						
+						
+						
 						}
 						
 						intBoard[intStack][intMove] = (intTurn % 2)+1;
@@ -335,11 +371,11 @@ public class CPTJayred{
 					}else{
 						
 						TextOutputFile txtRecordScore = new TextOutputFile("Highscores.txt",true );
-							txtRecordScore.println(strName1);
-							txtRecordScore.println(dblWins1);
-							txtRecordScore.println(strName2);
-							txtRecordScore.println(dblWins2);
-							txtRecordScore.close();
+						txtRecordScore.println(strName1);
+						txtRecordScore.println(dblWins1);
+						txtRecordScore.println(strName2);
+						txtRecordScore.println(dblWins2);
+						txtRecordScore.close();
 							
 						while(!strChoice.equals("b")){
 							
@@ -447,30 +483,134 @@ public class CPTJayred{
 					
 			}else if(strChoice.equals("w")){
 			//Replay Screen
-			Game(con);
-			while(!strChoice.equals("b")){
-				int intMouseXw = con.currentMouseX();
-				int intMouseYw = con.currentMouseY();
-				int intCurrentMouseButtonw = con.currentMouseButton();
-				if(((intMouseXw >= 512) && (intMouseXw <= 710)) && ((intMouseYw >= 546) && (intMouseYw <= 582))){
-					//Back Button
-					con.setDrawColor(new Color (252, 200, 20));
-					con.drawRect(530,544,200,38);
+					
+					TextInputFile txtWatch = new TextInputFile("Replay.txt");
+					
+					con.clear();
+					Game(con);
+					Board(con);
+
+					con.setDrawColor(Color.WHITE);
+					con.drawString("1",320,640);
+					con.drawString("2",420,640);
+					con.drawString("3",520,640);
+					con.drawString("4",620,640);
+					con.drawString("5",720,640);
+					con.drawString("6",820,640);
+					con.drawString("7",920,640);
+					strName1 = txtWatch.readLine();
+					strName2 = txtWatch.readLine();
+					int intRows = 6;
+					int intColumns = 7;
+					int intBoard[][] = new int[intRows][intColumns];
+					
+					
 					con.setDrawColor(new Color (52, 232, 248));
-					con.drawString("BACK", 572, 534);
-					if(intCurrentMouseButtonw == 1){
-						strChoice = "b";
-						con.sleep(300);
+					con.drawString(strName2, 1107, 40);
+					con.setDrawColor(new Color (252, 200, 20));
+					con.drawString(strName1, 57, 40);
+					
+					char chrWin = ' ';
+					int intTurn = 1;
+					int intMove = 0;
+					
+					
+					while(chrWin != 'y'){
+						
+						con.println("						Replay ");
+						
+						if(intTurn % 2 == 1){
+							con.setDrawColor(new Color (52, 232, 248));
+							con.fillOval(1085,130,140,140);
+							
+							
+						}else{
+							
+							con.setDrawColor(new Color (252, 200, 20));
+							con.fillOval(55,130,140,140);
+							
+						}
+						intMove = txtWatch.readInt();
+	
+						int intStack = 0;
+						while(intBoard[intStack][intMove]>0){
+							intStack = intStack+1;
+							if(intStack > 5){
+								intStack = 0;
+							}
+						}
+						
+						intBoard[intStack][intMove] = (intTurn % 2)+1;
+						if(intTurn % 2 == 1){
+							con.setDrawColor(new Color (252, 200, 20));
+						}else{
+							con.setDrawColor(new Color (52, 232, 248));
+						}
+						con.fillOval(290+((intMove)*100),550-((intStack)*100),80,80);
+						
+						chrWin = chrCheck(intBoard, intStack, intMove, intTurn);
+						
+						
+						if(intTurn == 42){
+							chrWin = 'y';
+						}else{
+						
+							intTurn = intTurn + 1;
+						}
+						
+						con.sleep(750);
+						
+						con.setDrawColor(Color.BLACK);
+						con.fillOval(55,130,140,140);
+						con.fillOval(1085,130,140,140);
+						con.clear();
+						
 					}
-					}else{
+					
+					
+					if(intTurn == 42){
+					
+						con.setDrawColor(Color.WHITE);
+						con.drawString("TIE",80,300);	
+						
+					}else if(intTurn % 2 == 0){
 						con.setDrawColor(new Color (252, 200, 20));
-						con.setDrawColor(Color.WHITE);
-						con.drawString("BACK", 572, 534);	
-						con.setDrawColor(Color.WHITE);
-						con.drawRect(530,544,200,38);
+						con.drawString("WIN",80,300);
+						con.setDrawColor(new Color (52, 232, 248));
+						con.drawString("LOSS",1080,300);
+						
+					}else{
+						con.setDrawColor(new Color (52, 232, 248));
+						con.drawString("WIN",1080,300);
+						con.setDrawColor(new Color (252, 200, 20));
+						con.drawString("LOSS",80,300);
 					}
-					con.repaint();
-				}
+					txtWatch.close();
+					
+					while(!strChoice.equals("b")){
+								
+						int intMouseXw = con.currentMouseX();
+						int intMouseYw = con.currentMouseY();
+						int intCurrentMouseButtonw = con.currentMouseButton();
+						if(((intMouseXw >= 12) && (intMouseXw <= 210)) && ((intMouseYw >= 546) && (intMouseYw <= 582))){
+							//Back Button
+							con.setDrawColor(new Color (252, 200, 20));
+							con.drawRect(30,544,200,38);
+							con.setDrawColor(new Color (52, 232, 248));
+							con.drawString("BACK", 72, 534);
+							if(intCurrentMouseButtonw == 1){
+								strChoice = "b";
+								con.sleep(300);
+							}
+						}else{
+							con.setDrawColor(new Color (252, 200, 20));
+							con.setDrawColor(Color.WHITE);
+							con.drawString("BACK", 72, 534);	
+							con.setDrawColor(Color.WHITE);
+							con.drawRect(30,544,200,38);
+						}
+						con.repaint();
+					}
 				
 			}else{
 				//Quit Screen
