@@ -5,6 +5,7 @@
  * By: Jayred Robles
  * Date Created: May 29, 2023
  * Purpose: 2-Player Connect 4 Game With Other Features
+ * Version: 2.1
  * 
  */
 
@@ -105,6 +106,8 @@ public class CPTJayred{
 						con.repaint();
 					}
 				}
+				
+				chrChoice = 'p';
 				//Amount of wins
 				double dblWins1 = 0.00;
 				double dblWins2 = 0.00;
@@ -202,7 +205,7 @@ public class CPTJayred{
 						
 						
 					}
-		
+				
 					
 					con.clear();
 					con.repaint();
